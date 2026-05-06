@@ -33,6 +33,7 @@ Phase 5 adds:
 - Postgres + Drizzle schema for conversations, messages, saved memories, and tool calls
 - Optional persistence for chat messages and tool calls (no vector/RAG memory yet)
 - UI polished into a professional agent workspace
+- Added Netronk light/dark theme system with persisted user preference
 
 Current internal tools:
 - getCurrentProjectInfo

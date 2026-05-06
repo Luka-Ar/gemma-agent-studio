@@ -1,4 +1,5 @@
 import ChatWindow from "@/components/chat/chat-window";
+import ThemeToggle from "@/components/theme/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -80,7 +81,7 @@ export default function Home() {
 
         <div className="flex min-w-0 flex-1 flex-col gap-6">
           <header className="rounded-2xl border border-border/70 bg-panel/70 px-6 py-6 backdrop-blur">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-2">
                 <div className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                   Agentic AI Workspace
@@ -92,13 +93,16 @@ export default function Home() {
                   A Gemma-powered developer workspace with model providers, structured routing, and internal tools.
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="uppercase tracking-[0.2em]">
-                  {statusLabel}
-                </Badge>
-                <Badge variant="outline" className="uppercase tracking-[0.2em]">
-                  Phase 4
-                </Badge>
+              <div className="flex flex-col items-end gap-3">
+                <ThemeToggle className="min-w-[144px]" />
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="uppercase tracking-[0.2em]">
+                    {statusLabel}
+                  </Badge>
+                  <Badge variant="outline" className="uppercase tracking-[0.2em]">
+                    Phase 4
+                  </Badge>
+                </div>
               </div>
             </div>
           </header>

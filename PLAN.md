@@ -55,3 +55,4 @@
 4. Persist incoming user messages and assistant responses when the database is enabled.
 5. Keep API backward-compatible and note that vector/RAG memory comes later.
 6. UI polished into a professional agent workspace.
+7. Added Netronk light/dark theme system with persisted user preference.

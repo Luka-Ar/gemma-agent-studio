@@ -5,42 +5,82 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --app-background: #0b1118;
-  --app-foreground: #e2e8f0;
-  --panel: #0f172a;
-  --panel-muted: #0b1220;
-  --border: #1f2a37;
-  --muted-foreground: #94a3b8;
-  --accent: #38bdf8;
-  --background: oklch(0.14 0.02 245);
-  --foreground: oklch(0.98 0.01 255);
-  --card: oklch(0.18 0.02 248);
-  --card-foreground: oklch(0.98 0.01 255);
-  --popover: oklch(0.18 0.02 248);
-  --popover-foreground: oklch(0.98 0.01 255);
-  --primary: oklch(0.78 0.12 230);
-  --primary-foreground: oklch(0.16 0.02 240);
-  --secondary: oklch(0.2 0.02 248);
-  --secondary-foreground: oklch(0.92 0.01 255);
-  --muted: oklch(0.2 0.02 248);
-  --accent-foreground: oklch(0.16 0.02 240);
-  --destructive: oklch(0.65 0.2 25);
-  --input: oklch(0.22 0.02 248);
-  --ring: oklch(0.72 0.12 230);
-  --chart-1: oklch(0.78 0.12 230);
-  --chart-2: oklch(0.7 0.08 210);
-  --chart-3: oklch(0.62 0.05 210);
-  --chart-4: oklch(0.54 0.03 210);
-  --chart-5: oklch(0.46 0.02 210);
+  color-scheme: light;
+  --app-background: #efebda;
+  --app-foreground: #393636;
+  --panel: #f6f1e4;
+  --panel-muted: #efe6d2;
+  --border: rgba(57, 54, 54, 0.14);
+  --muted-foreground: rgba(57, 54, 54, 0.65);
+  --accent: #f14c2f;
+  --background: #efebda;
+  --foreground: #393636;
+  --card: #f6f1e4;
+  --card-foreground: #393636;
+  --popover: #f6f1e4;
+  --popover-foreground: #393636;
+  --primary: #f14c2f;
+  --primary-foreground: #f8f2e6;
+  --secondary: #efe6d2;
+  --secondary-foreground: #393636;
+  --muted: #efe6d2;
+  --accent-foreground: #f8f2e6;
+  --destructive: #c73b23;
+  --input: rgba(57, 54, 54, 0.18);
+  --ring: rgba(241, 76, 47, 0.55);
+  --chart-1: #f14c2f;
+  --chart-2: #d7432b;
+  --chart-3: #b83a25;
+  --chart-4: #9b3320;
+  --chart-5: #7c2b1b;
   --radius: 0.8rem;
-  --sidebar: oklch(0.16 0.02 248);
-  --sidebar-foreground: oklch(0.92 0.01 255);
-  --sidebar-primary: oklch(0.78 0.12 230);
-  --sidebar-primary-foreground: oklch(0.16 0.02 240);
-  --sidebar-accent: oklch(0.2 0.02 248);
-  --sidebar-accent-foreground: oklch(0.92 0.01 255);
-  --sidebar-border: oklch(0.22 0.02 248);
-  --sidebar-ring: oklch(0.72 0.12 230);
+  --sidebar: #f1ebdc;
+  --sidebar-foreground: #393636;
+  --sidebar-primary: #f14c2f;
+  --sidebar-primary-foreground: #f8f2e6;
+  --sidebar-accent: #efe6d2;
+  --sidebar-accent-foreground: #393636;
+  --sidebar-border: rgba(57, 54, 54, 0.12);
+  --sidebar-ring: rgba(241, 76, 47, 0.5);
+}
+
+.dark {
+  color-scheme: dark;
+  --app-background: #1f1e1d;
+  --app-foreground: #efebda;
+  --panel: #2a2524;
+  --panel-muted: #231f1e;
+  --border: rgba(239, 235, 218, 0.14);
+  --muted-foreground: rgba(239, 235, 218, 0.65);
+  --accent: #f14c2f;
+  --background: #1f1e1d;
+  --foreground: #efebda;
+  --card: #2a2524;
+  --card-foreground: #efebda;
+  --popover: #2a2524;
+  --popover-foreground: #efebda;
+  --primary: #f14c2f;
+  --primary-foreground: #f8f2e6;
+  --secondary: #2f2a29;
+  --secondary-foreground: #efebda;
+  --muted: #2f2a29;
+  --accent-foreground: #f8f2e6;
+  --destructive: #c73b23;
+  --input: rgba(239, 235, 218, 0.2);
+  --ring: rgba(241, 76, 47, 0.55);
+  --chart-1: #f14c2f;
+  --chart-2: #d7432b;
+  --chart-3: #b83a25;
+  --chart-4: #9b3320;
+  --chart-5: #7c2b1b;
+  --sidebar: #262221;
+  --sidebar-foreground: #efebda;
+  --sidebar-primary: #f14c2f;
+  --sidebar-primary-foreground: #f8f2e6;
+  --sidebar-accent: #2f2a29;
+  --sidebar-accent-foreground: #efebda;
+  --sidebar-border: rgba(239, 235, 218, 0.12);
+  --sidebar-ring: rgba(241, 76, 47, 0.5);
 }
 
 @theme inline {
@@ -97,14 +137,14 @@ body {
   font-family: var(--font-sans), "Space Grotesk", "Segoe UI", sans-serif;
   background-image:
     radial-gradient(
-      1100px circle at 8% 8%,
-      rgba(56, 189, 248, 0.08),
-      transparent 45%
+      1100px circle at 10% 5%,
+      rgba(241, 76, 47, 0.14),
+      transparent 52%
     ),
     radial-gradient(
       900px circle at 90% 90%,
-      rgba(14, 116, 144, 0.08),
-      transparent 45%
+      rgba(241, 76, 47, 0.08),
+      transparent 50%
     );
   background-attachment: fixed;
 }

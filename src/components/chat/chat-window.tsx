@@ -82,7 +82,7 @@ export default function ChatWindow() {
   );
 
   return (
-    <Card className="relative flex min-h-[640px] flex-col border-border/70 bg-panel/80 shadow-[0_8px_40px_rgba(15,23,42,0.35)]">
+    <Card className="relative flex min-h-[640px] flex-col border-border/70 bg-panel/80 shadow-[0_8px_40px_rgba(23,20,19,0.35)]">
       <CardHeader className="gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
