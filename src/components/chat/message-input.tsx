@@ -7,14 +7,16 @@ type MessageInputProps = {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
-  disabled?: boolean;
+  isLoading?: boolean;
+  canSend?: boolean;
 };
 
 export default function MessageInput({
   value,
   onChange,
   onSubmit,
-  disabled = false,
+  isLoading = false,
+  canSend = false,
 }: MessageInputProps) {
   return (
     <form
@@ -25,23 +27,33 @@ export default function MessageInput({
       }}
     >
       <label className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-        Message
+        Prompt
       </label>
-      <div className="flex flex-col gap-3 rounded-xl border border-border bg-panel px-4 py-4">
+      <div className="flex flex-col gap-3 rounded-2xl border border-border/70 bg-panel px-4 py-4">
         <Textarea
-          className="min-h-[110px] bg-panel text-sm"
+          className="min-h-[110px] bg-transparent text-sm leading-relaxed"
           placeholder="Describe what you want to build with Gemma."
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          disabled={disabled}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              if (!isLoading && canSend) {
+                onSubmit();
+              }
+            }
+          }}
+          disabled={isLoading}
         />
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-muted-foreground">
-            {disabled
-              ? "Waiting for response"
-              : "Press send to submit your prompt"}
+            Local tools and structured routing are enabled.
           </p>
-          <Button type="submit" disabled={disabled} className="uppercase">
+          <Button
+            type="submit"
+            disabled={isLoading || !canSend}
+            className="uppercase"
+          >
             Send
           </Button>
         </div>

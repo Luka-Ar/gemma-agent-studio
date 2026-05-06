@@ -54,3 +54,4 @@
 3. Add memory stores for conversation persistence and saved memories.
 4. Persist incoming user messages and assistant responses when the database is enabled.
 5. Keep API backward-compatible and note that vector/RAG memory comes later.
+6. UI polished into a professional agent workspace.

@@ -32,6 +32,7 @@ Phase 4 adds:
 Phase 5 adds:
 - Postgres + Drizzle schema for conversations, messages, saved memories, and tool calls
 - Optional persistence for chat messages and tool calls (no vector/RAG memory yet)
+- UI polished into a professional agent workspace
 
 Current internal tools:
 - getCurrentProjectInfo
