@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gemma Agent Studio
+
+Gemma Agent Studio is a developer-focused, open-source agentic AI studio. It is currently in Phase 1 with a polished chat interface and mocked responses, while the full agentic system is planned for later phases.
+
+## Project Vision
+Gemma Agent Studio is being built as an open-source developer-focused agentic AI studio with chat, structured reasoning, tool calling, memory, document RAG, GitHub repo analysis, and workflow automation.
+
+## Current Status (Phase 1)
+Phase 1 includes:
+- Clean Next.js chat interface
+- Mocked assistant API response
+- Modular project structure
+- Roadmap documented in PLAN.md
+
+## Roadmap
+- Phase 1: Basic chat UI with mocked backend response
+- Phase 2: Gemma model client integration
+- Phase 3: Structured agent loop
+- Phase 4: Tool calling
+- Phase 5: Memory with Postgres
+- Phase 6: File/document RAG
+- Phase 7: GitHub repo assistant
+- Phase 8: Telegram/Discord interface
+- Phase 9: Evaluation and portfolio polish
+
+## Tech Stack
+- Next.js
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Zod
+- Future: Postgres, pgvector, Gemma model provider, GitHub API
 
 ## Getting Started
-
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Current API
+POST /api/chat
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Request:
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ]
+}
+```
 
-## Learn More
+Response:
+```json
+{
+  "message": {
+    "role": "assistant",
+    "content": "This is a mocked Gemma Agent Studio response. Gemma model integration will be added in Phase 2."
+  }
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Repo Description Suggestion
+Open-source Gemma-powered agentic AI studio with chat, tool calling, memory, RAG, and developer workflow automation.
