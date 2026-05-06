@@ -24,7 +24,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const response: ChatResponse = await callGemmaModel(parsed.data.messages);
+    const result = await callGemmaModel(parsed.data.messages);
+    const response: ChatResponse = { message: result.message };
     return NextResponse.json(response);
   } catch (error) {
     console.error("/api/chat error", error);

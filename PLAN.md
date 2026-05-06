@@ -11,7 +11,7 @@
 - Phase 8: Telegram/Discord interface
 - Phase 9: Evaluation and portfolio polish
 
-## Phase 1 Implementation Plan (Current)
+## Phase 1 Implementation Plan (Complete)
 1. Move the Next.js App Router structure under src/.
 2. Create chat UI components (window, message list, input) and a clean homepage layout.
 3. Define shared types for messages and API payloads.
@@ -19,3 +19,10 @@
 5. Add a placeholder Gemma client function that returns the mocked response.
 6. Wire client-side loading and basic error states in the chat UI.
 7. Polish the Phase 1 UI with shadcn/ui components and refined spacing.
+
+## Phase 2 Implementation Notes (Current)
+1. Add a provider-agnostic model client interface and types.
+2. Implement a Gemma client that reads environment configuration.
+3. Support a mock provider fallback for local development.
+4. Route /api/chat through the model client abstraction.
+5. Document environment setup and Phase 2 status in README.
