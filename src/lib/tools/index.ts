@@ -1,0 +1,1 @@
+export const TOOL_REGISTRY: Record<string, unknown> = {};
