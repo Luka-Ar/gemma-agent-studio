@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { callGemmaModel } from "@/lib/model/gemma-client";
+import { runAgentLoop } from "@/lib/agent/agent-loop";
 import type { ChatRequest, ChatResponse } from "@/lib/agent/types";
 
 const chatRequestSchema = z.object({
@@ -24,8 +24,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await callGemmaModel(parsed.data.messages);
-    const response: ChatResponse = { message: result.message };
+    const response: ChatResponse = await runAgentLoop(parsed.data.messages);
     return NextResponse.json(response);
   } catch (error) {
     console.error("/api/chat error", error);

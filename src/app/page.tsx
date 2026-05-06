@@ -18,10 +18,10 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3">
             <Badge variant="secondary" className="uppercase tracking-[0.2em]">
-              Phase 1
+              Phase 3
             </Badge>
             <span className="text-xs text-muted-foreground">
-              Mocked responses
+              Structured agent loop
             </span>
           </div>
         </div>
@@ -43,8 +43,8 @@ export default function Home() {
               Talk to your Gemma-powered assistant
             </h2>
             <CardDescription className="max-w-2xl text-base">
-              Phase 1 delivers a clean chat surface with mocked responses. Gemma
-              model integration arrives in Phase 2.
+              Phase 3 adds a structured agent loop with tool-aware routing on
+              top of the existing model provider abstraction.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -56,7 +56,7 @@ export default function Home() {
                 Clear loading and error states for reliable feedback.
               </div>
               <div className="rounded-lg border border-border/70 bg-panel p-4">
-                Modular UI ready for Phase 2 model integration.
+                Deterministic routing for project context questions.
               </div>
             </div>
           </CardContent>

@@ -68,7 +68,7 @@ export default function ChatWindow() {
             <div className="h-2 w-2 rounded-full bg-emerald-500" />
             <CardTitle className="text-base">Chat Console</CardTitle>
             <Badge variant="outline" className="uppercase tracking-[0.2em]">
-              Phase 1
+              Phase 3
             </Badge>
           </div>
           <Badge variant={isLoading ? "secondary" : "outline"}>
@@ -76,7 +76,8 @@ export default function ChatWindow() {
           </Badge>
         </div>
         <CardDescription>
-          Messages are mocked until Gemma integration is enabled.
+          Structured agent loop enabled. Local Ollama and mock providers are
+          supported.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

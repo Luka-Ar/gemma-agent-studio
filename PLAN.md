@@ -20,15 +20,24 @@
 6. Wire client-side loading and basic error states in the chat UI.
 7. Polish the Phase 1 UI with shadcn/ui components and refined spacing.
 
-## Phase 2 Implementation Notes (Current)
+## Phase 2 Implementation Notes (Complete)
 1. Add a provider-agnostic model client interface and types.
 2. Implement a Gemma client that reads environment configuration.
 3. Support a mock provider fallback for local development.
 4. Route /api/chat through the model client abstraction.
 5. Document environment setup and Phase 2 status in README.
 
-## Phase 2.1 Implementation Notes (Current)
+## Phase 2.1 Implementation Notes (Complete)
 1. Add Ollama provider support in the Gemma client.
 2. Use the Ollama local API without extra SDKs.
 3. Add config examples for local providers in .env.example.
 4. Document Ollama setup steps in README.
+
+## Phase 3 Implementation Notes (Complete)
+1. Add structured agent response types and tool call result types.
+2. Add a JSON-only structured agent system prompt.
+3. Implement a mock tool registry with project info.
+4. Run a bounded agent loop with tool calls and safe fallbacks.
+5. Route /api/chat through the agent loop.
+6. Add deterministic routing for project-info questions.
+7. Add intent-aware, concise formatting for project-info responses.

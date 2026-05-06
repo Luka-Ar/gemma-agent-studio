@@ -1,11 +1,11 @@
 # Gemma Agent Studio
 
-Gemma Agent Studio is a developer-focused, open-source agentic AI studio. It is currently in Phase 2.1 with a model client abstraction, mock responses, and Ollama local provider support, while the full agentic system is planned for later phases.
+Gemma Agent Studio is a developer-focused, open-source agentic AI studio. It is currently in Phase 3 with a structured agent loop and a mock tool registry, while the full agentic system is planned for later phases.
 
 ## Project Vision
 Gemma Agent Studio is being built as an open-source developer-focused agentic AI studio with chat, structured reasoning, tool calling, memory, document RAG, GitHub repo analysis, and workflow automation.
 
-## Current Status (Phase 2.1)
+## Current Status (Phase 3)
 Phase 1 includes:
 - Clean Next.js chat interface
 - Mocked assistant API response
@@ -18,6 +18,12 @@ Phase 2 adds:
 
 Phase 2.1 adds:
 - Ollama local provider support
+
+Phase 3 adds:
+- Structured agent loop with JSON response handling
+- Mock tool registry with a project info tool
+- Deterministic routing for project-info questions
+- Intent-aware, concise project-info answers
 
 ## Roadmap
 - Phase 1: Basic chat UI with mocked backend response
