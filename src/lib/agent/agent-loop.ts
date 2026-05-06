@@ -2,14 +2,20 @@ import type {
   AgentResponse,
   ChatMessage,
   ChatResponse,
-  ToolCallResult,
 } from "@/lib/agent/types";
 import { STRUCTURED_AGENT_PROMPT } from "@/lib/agent/prompts";
 import { callGemmaModel } from "@/lib/model/gemma-client";
-import { TOOL_REGISTRY } from "@/lib/tools";
+import {
+  createToolContext,
+  toolRegistry,
+  type ToolResult,
+} from "@/lib/tools";
 
 const MAX_ITERATIONS = 3;
 const PROJECT_INFO_TOOL = "getCurrentProjectInfo";
+const DATETIME_TOOL = "getDateTime";
+const SUMMARIZE_TOOL = "summarizeText";
+const ACTION_ITEMS_TOOL = "extractActionItems";
 
 type ProjectInfoIntent =
   | "project_identity"
@@ -63,7 +69,7 @@ function parseAgentResponse(raw: string): AgentResponse | null {
   }
 }
 
-function buildToolResultMessage(result: ToolCallResult): ChatMessage {
+function buildToolResultMessage(result: ToolResult): ChatMessage {
   return {
     role: "system",
     content: `Tool result: ${JSON.stringify(result)}`,
@@ -79,6 +85,11 @@ function getLatestUserMessage(messages: ChatMessage[]): ChatMessage | null {
   }
 
   return null;
+}
+
+function getLatestUserText(messages: ChatMessage[]): string {
+  const message = getLatestUserMessage(messages);
+  return message ? message.content.trim() : "";
 }
 
 function classifyProjectInfoIntent(text: string): ProjectInfoIntent {
@@ -126,6 +137,26 @@ function isProjectInfoQuery(messages: ChatMessage[]): boolean {
   return PROJECT_INFO_PATTERNS.some((pattern) => pattern.test(text));
 }
 
+function isDateTimeQuery(text: string): boolean {
+  return /\b(time|date|day|timezone)\b/i.test(text);
+}
+
+function isSummarizeQuery(text: string): boolean {
+  return /\bsummarize\b/i.test(text);
+}
+
+function isActionItemsQuery(text: string): boolean {
+  return /\b(action\s+items|todo|to-do)\b/i.test(text);
+}
+
+function extractInlineText(text: string): string {
+  const match = text.match(/\b(?:summarize|summary|extract action items|action items|todo)\b[:\s-]*(.*)/i);
+  if (match && match[1]) {
+    return match[1].trim();
+  }
+  return "";
+}
+
 export async function runAgentLoop(
   messages: ChatMessage[]
 ): Promise<ChatResponse> {
@@ -135,15 +166,17 @@ export async function runAgentLoop(
   ];
 
   let lastRawResponse = "";
+  const toolContext = createToolContext();
+  const latestUserText = getLatestUserText(messages);
 
   if (isProjectInfoQuery(messages)) {
     const latestMessage = getLatestUserMessage(messages);
     const intent = latestMessage
       ? classifyProjectInfoIntent(latestMessage.content)
       : "general_project_info";
-    const tool = TOOL_REGISTRY[PROJECT_INFO_TOOL];
+    const tool = toolRegistry[PROJECT_INFO_TOOL];
     const toolResult = tool
-      ? await tool.run({})
+      ? await tool.run({}, toolContext)
       : {
           tool: PROJECT_INFO_TOOL,
           ok: false,
@@ -166,6 +199,96 @@ export async function runAgentLoop(
       message: {
         role: "assistant",
         content: formatProjectInfoAnswer(intent, info),
+      },
+    };
+  }
+
+  if (latestUserText && isDateTimeQuery(latestUserText)) {
+    const tool = toolRegistry[DATETIME_TOOL];
+    const toolResult = tool
+      ? await tool.run({}, toolContext)
+      : { tool: DATETIME_TOOL, ok: false, error: "Tool is unavailable." };
+    if (!toolResult.ok || !toolResult.result) {
+      return {
+        message: {
+          role: "assistant",
+          content: toolResult.error ?? "Date and time are not available.",
+        },
+      };
+    }
+    const result = toolResult.result as {
+      iso?: string;
+      local?: string;
+      timeZone?: string;
+    };
+    const timeZoneLabel = result.timeZone ? ` (${result.timeZone})` : "";
+    return {
+      message: {
+        role: "assistant",
+        content: `${result.local ?? "Current time"}${timeZoneLabel}.`,
+      },
+    };
+  }
+
+  if (latestUserText && isSummarizeQuery(latestUserText)) {
+    const inlineText = extractInlineText(latestUserText);
+    const tool = toolRegistry[SUMMARIZE_TOOL];
+    const toolResult = tool
+      ? await tool.run({ text: inlineText }, toolContext)
+      : { tool: SUMMARIZE_TOOL, ok: false, error: "Tool is unavailable." };
+    if (!toolResult.ok || !toolResult.result) {
+      return {
+        message: {
+          role: "assistant",
+          content:
+            toolResult.error ??
+            "Please provide the text you want summarized.",
+        },
+      };
+    }
+    const result = toolResult.result as { summary?: string };
+    return {
+      message: {
+        role: "assistant",
+        content: result.summary ?? "No summary available.",
+      },
+    };
+  }
+
+  if (latestUserText && isActionItemsQuery(latestUserText)) {
+    const inlineText = extractInlineText(latestUserText);
+    const tool = toolRegistry[ACTION_ITEMS_TOOL];
+    const toolResult = tool
+      ? await tool.run({ text: inlineText }, toolContext)
+      : {
+          tool: ACTION_ITEMS_TOOL,
+          ok: false,
+          error: "Tool is unavailable.",
+        };
+    if (!toolResult.ok || !toolResult.result) {
+      return {
+        message: {
+          role: "assistant",
+          content:
+            toolResult.error ??
+            "Please provide the text you want action items extracted from.",
+        },
+      };
+    }
+    const result = toolResult.result as { items?: string[] };
+    const items = result.items ?? [];
+    if (items.length === 0) {
+      return {
+        message: {
+          role: "assistant",
+          content: "No action items found.",
+        },
+      };
+    }
+    return {
+      message: {
+        role: "assistant",
+        content: `Action items: ${items.join("; ")}.`,
       },
     };
   }
@@ -204,26 +327,14 @@ export async function runAgentLoop(
     }
 
     if (agentResponse.type === "tool_call") {
-      const tool = TOOL_REGISTRY[agentResponse.tool];
-      let toolResult: ToolCallResult;
-
-      if (!tool) {
-        toolResult = {
-          tool: agentResponse.tool,
-          ok: false,
-          error: "Requested tool is not available.",
-        };
-      } else {
-        try {
-          toolResult = await tool.run(agentResponse.args ?? {});
-        } catch {
-          toolResult = {
+      const tool = toolRegistry[agentResponse.tool];
+      const toolResult = tool
+        ? await tool.run(agentResponse.args ?? {}, toolContext)
+        : {
             tool: agentResponse.tool,
             ok: false,
-            error: "Tool execution failed.",
+            error: "Requested tool is not available.",
           };
-        }
-      }
 
       conversation.push(buildToolResultMessage(toolResult));
       conversation.push({

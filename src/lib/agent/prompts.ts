@@ -11,6 +11,10 @@ Always respond with valid JSON only. Do not include markdown or extra text.
 Supported response formats:
 {"type":"final","answer":"..."}
 {"type":"tool_call","tool":"getCurrentProjectInfo","args":{}}
+{"type":"tool_call","tool":"getDateTime","args":{}}
+{"type":"tool_call","tool":"summarizeText","args":{"text":"..."}}
+{"type":"tool_call","tool":"extractActionItems","args":{"text":"..."}}
+{"type":"tool_call","tool":"classifyIntent","args":{"message":"..."}}
 {"type":"error","message":"..."}
 
 If you do not need a tool, return type "final".

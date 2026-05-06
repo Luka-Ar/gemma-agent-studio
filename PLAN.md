@@ -41,3 +41,9 @@
 5. Route /api/chat through the agent loop.
 6. Add deterministic routing for project-info questions.
 7. Add intent-aware, concise formatting for project-info responses.
+
+## Phase 4 Implementation Notes (Complete)
+1. Introduce internal tool definitions, execution context, and result types.
+2. Add deterministic internal tools for datetime, summarization, and action items.
+3. Add intent classification helper tool.
+4. Route specific queries to tools before invoking the model.
