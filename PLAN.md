@@ -26,3 +26,9 @@
 3. Support a mock provider fallback for local development.
 4. Route /api/chat through the model client abstraction.
 5. Document environment setup and Phase 2 status in README.
+
+## Phase 2.1 Implementation Notes (Current)
+1. Add Ollama provider support in the Gemma client.
+2. Use the Ollama local API without extra SDKs.
+3. Add config examples for local providers in .env.example.
+4. Document Ollama setup steps in README.
