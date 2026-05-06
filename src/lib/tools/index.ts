@@ -78,7 +78,10 @@ function extractActionItemsDeterministic(text: string): string[] {
 const getCurrentProjectInfo: ToolDefinition = {
 	name: "getCurrentProjectInfo",
 	description: "Return basic information about the current project.",
-	run: async (_args, _context) => ({
+	run: async (args, context) => {
+		void args;
+		void context;
+		return {
 		tool: "getCurrentProjectInfo",
 		ok: true,
 		result: {
@@ -92,7 +95,8 @@ const getCurrentProjectInfo: ToolDefinition = {
 				"internal tools foundation",
 			],
 		},
-	}),
+		};
+	},
 };
 
 const getDateTime: ToolDefinition = {
