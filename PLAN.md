@@ -5,7 +5,7 @@
 - Phase 2: Gemma model client integration
 - Phase 3: Structured agent loop
 - Phase 4: Tool calling
-- Phase 5: Memory with Postgres
+- Phase 5: Memory with Postgres (complete)
 - Phase 6: File/document RAG
 - Phase 7: GitHub repo assistant
 - Phase 8: Telegram/Discord interface
@@ -47,3 +47,10 @@
 2. Add deterministic internal tools for datetime, summarization, and action items.
 3. Add intent classification helper tool.
 4. Route specific queries to tools before invoking the model.
+
+## Phase 5 Implementation Notes (Complete)
+1. Add Drizzle schema for conversations, messages, saved memories, and tool calls.
+2. Add database access helpers with graceful fallback when DATABASE_URL is missing.
+3. Add memory stores for conversation persistence and saved memories.
+4. Persist incoming user messages and assistant responses when the database is enabled.
+5. Keep API backward-compatible and note that vector/RAG memory comes later.

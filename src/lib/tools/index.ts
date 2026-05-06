@@ -86,13 +86,14 @@ const getCurrentProjectInfo: ToolDefinition = {
 		ok: true,
 		result: {
 			name: "Gemma Agent Studio",
-			currentPhase: "Phase 4",
+			currentPhase: "Phase 5",
 			capabilities: [
 				"chat",
 				"model provider abstraction",
 				"ollama local provider",
 				"structured agent loop",
 				"internal tools foundation",
+				"persistent memory foundation",
 			],
 		},
 		};

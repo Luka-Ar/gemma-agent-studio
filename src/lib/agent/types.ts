@@ -6,10 +6,12 @@ export type ChatMessage = {
 };
 
 export type ChatRequest = {
+  conversationId?: string;
   messages: ChatMessage[];
 };
 
 export type ChatResponse = {
+  conversationId?: string;
   message: ChatMessage;
 };
 

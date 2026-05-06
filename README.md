@@ -1,11 +1,11 @@
 # Gemma Agent Studio
 
-Gemma Agent Studio is a developer-focused, open-source agentic AI studio. It is currently in Phase 4 with an internal tool calling foundation, while the full agentic system is planned for later phases.
+Gemma Agent Studio is a developer-focused, open-source agentic AI studio. It is currently in Phase 5 with a Postgres-backed memory foundation, while the full agentic system is planned for later phases.
 
 ## Project Vision
 Gemma Agent Studio is being built as an open-source developer-focused agentic AI studio with chat, structured reasoning, tool calling, memory, document RAG, GitHub repo analysis, and workflow automation.
 
-## Current Status (Phase 4)
+## Current Status (Phase 5)
 Phase 1 includes:
 - Clean Next.js chat interface
 - Mocked assistant API response
@@ -28,6 +28,10 @@ Phase 3 adds:
 Phase 4 adds:
 - Internal tool calling foundation
 - Deterministic, local tools for datetime, summarization, action items, and intent classification
+
+Phase 5 adds:
+- Postgres + Drizzle schema for conversations, messages, saved memories, and tool calls
+- Optional persistence for chat messages and tool calls (no vector/RAG memory yet)
 
 Current internal tools:
 - getCurrentProjectInfo
@@ -53,7 +57,9 @@ Current internal tools:
 - Tailwind CSS
 - shadcn/ui
 - Zod
-- Future: Postgres, pgvector, Gemma model provider, GitHub API
+- Drizzle ORM
+- Postgres
+- Future: pgvector, Gemma model provider, GitHub API
 
 ## Getting Started
 ```bash
@@ -71,6 +77,7 @@ GEMMA_PROVIDER=mock
 GEMMA_API_KEY=
 GEMMA_MODEL=
 GEMMA_BASE_URL=
+DATABASE_URL=
 ```
 
 #### Mock Provider
@@ -95,6 +102,21 @@ The mock provider returns a safe placeholder response for local development.
 
 The project supports Ollama provider mode, but you must install the model locally. After validation, you can switch to a larger model such as `gemma4:e2b`.
 
+#### Optional Database Setup (Phase 5)
+Persistence is optional. If `DATABASE_URL` is not set, the app still runs without saving conversations, messages, or tool calls.
+
+Example Postgres connection string:
+```bash
+DATABASE_URL=postgres://user:password@localhost:5432/gemma_agent_studio
+```
+
+Drizzle commands:
+```bash
+npm run db:generate
+npm run db:migrate
+npm run db:studio
+```
+
 ## Current API
 POST /api/chat
 
@@ -110,9 +132,33 @@ Request:
 }
 ```
 
+Optional request with persistence:
+```json
+{
+  "conversationId": "uuid",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ]
+}
+```
+
 Response:
 ```json
 {
+  "message": {
+    "role": "assistant",
+    "content": "Mock provider active. Real Gemma integration will be added after provider credentials are configured."
+  }
+}
+```
+
+Optional response when persistence is enabled:
+```json
+{
+  "conversationId": "uuid",
   "message": {
     "role": "assistant",
     "content": "Mock provider active. Real Gemma integration will be added after provider credentials are configured."

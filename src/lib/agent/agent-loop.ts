@@ -10,6 +10,7 @@ import {
   toolRegistry,
   type ToolResult,
 } from "@/lib/tools";
+import { saveToolCall } from "@/lib/memory/conversation-store";
 
 const MAX_ITERATIONS = 3;
 const PROJECT_INFO_TOOL = "getCurrentProjectInfo";
@@ -110,7 +111,7 @@ function formatProjectInfoAnswer(
   info: ProjectInfoData
 ): string {
   const name = info.name ?? "Gemma Agent Studio";
-  const phase = info.currentPhase ?? "Phase 3";
+  const phase = info.currentPhase ?? "Phase 5";
   const capabilities = info.capabilities ?? [];
 
   switch (intent) {
@@ -157,9 +158,28 @@ function extractInlineText(text: string): string {
   return "";
 }
 
+type AgentLoopOptions = {
+  conversationId?: string | null;
+};
+
+async function recordToolCall(
+  conversationId: string | null | undefined,
+  toolName: string,
+  input: unknown,
+  output: unknown
+) {
+  if (!conversationId) {
+    return;
+  }
+
+  await saveToolCall(conversationId, toolName, input, output);
+}
+
 export async function runAgentLoop(
-  messages: ChatMessage[]
+  messages: ChatMessage[],
+  options?: AgentLoopOptions
 ): Promise<ChatResponse> {
+  const conversationId = options?.conversationId ?? null;
   const conversation: ChatMessage[] = [
     { role: "system", content: STRUCTURED_AGENT_PROMPT },
     ...messages,
@@ -182,6 +202,8 @@ export async function runAgentLoop(
           ok: false,
           error: "Requested tool is not available.",
         };
+
+    await recordToolCall(conversationId, PROJECT_INFO_TOOL, {}, toolResult);
 
     if (!toolResult.ok || !toolResult.result) {
       return {
@@ -208,6 +230,8 @@ export async function runAgentLoop(
     const toolResult = tool
       ? await tool.run({}, toolContext)
       : { tool: DATETIME_TOOL, ok: false, error: "Tool is unavailable." };
+
+    await recordToolCall(conversationId, DATETIME_TOOL, {}, toolResult);
     if (!toolResult.ok || !toolResult.result) {
       return {
         message: {
@@ -236,6 +260,13 @@ export async function runAgentLoop(
     const toolResult = tool
       ? await tool.run({ text: inlineText }, toolContext)
       : { tool: SUMMARIZE_TOOL, ok: false, error: "Tool is unavailable." };
+
+    await recordToolCall(
+      conversationId,
+      SUMMARIZE_TOOL,
+      { text: inlineText },
+      toolResult
+    );
     if (!toolResult.ok || !toolResult.result) {
       return {
         message: {
@@ -265,6 +296,13 @@ export async function runAgentLoop(
           ok: false,
           error: "Tool is unavailable.",
         };
+
+    await recordToolCall(
+      conversationId,
+      ACTION_ITEMS_TOOL,
+      { text: inlineText },
+      toolResult
+    );
     if (!toolResult.ok || !toolResult.result) {
       return {
         message: {
@@ -335,6 +373,13 @@ export async function runAgentLoop(
             ok: false,
             error: "Requested tool is not available.",
           };
+
+      await recordToolCall(
+        conversationId,
+        agentResponse.tool,
+        agentResponse.args ?? {},
+        toolResult
+      );
 
       conversation.push(buildToolResultMessage(toolResult));
       conversation.push({
